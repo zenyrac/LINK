@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE BLACK BOOK™</title>
+    <style>
+        :root {
+            --neon-blue: #0ff0fc;
+            --neon-purple: #9600ff;
+            --dark-bg: #0a0a12;
+            --darker-bg: #050508;
+            --panel-bg: rgba(10, 10, 20, 0.8);
+            --error-red: #ff3860;
+            --glow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .access-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--panel-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: var(--glow);
+            z-index: 100;
+            text-align: center;
+            backdrop-filter: blur(0);
+        }
+
+        .access-panel.unlocked {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .access-panel h1 {
+            margin-bottom: 1.5rem;
+            color: var(--neon-blue);
+            text-shadow: var(--glow);
+            font-size: 1.8rem;
+        }
+
+        .access-input {
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: white;
+            padding: 0.8rem;
+            font-size: 1.2rem;
+            text-align: center;
+            width: 200px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            box-shadow: var(--glow);
+        }
+
+        .access-input:focus {
+            outline: none;
+        }
+
+        .error-message {
+            color: var(--error-red);
+            margin-bottom: 1rem;
+            height: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 2rem;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .container.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        h1.title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--neon-blue);
+            text-shadow: var(--glow);
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+
+        .shape-row {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .shape-card {
+            background: var(--panel-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 10px var(--neon-purple);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+        }
+
+        .shape-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            z-index: -1;
+            border-radius: 10px;
+            opacity: 0.7;
+        }
+
+        .shape-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--neon-purple);
+        }
+
+        .shape-label {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--neon-blue);
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .shape {
+            width: 100px;
+            height: 100px;
+            margin: 1rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 240, 252, 0.1);
+            border: 2px solid var(--neon-blue);
+            position: relative;
+        }
+
+        .square {
+            border-radius: 5px;
+        }
+
+        .circle {
+            border-radius: 50%;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 100px solid var(--neon-blue);
+            background: transparent !important;
+            border-top: none;
+        }
+
+        .parallelogram {
+            transform: skew(-20deg);
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 0.8rem;
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            border-radius: 5px;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 5px;
+            box-shadow: var(--glow);
+        }
+
+        .code-input:focus {
+            outline: none;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .result-container {
+            position: fixed;
+            bottom: -100px;
+            left: 0;
+            right: 0;
+            background: var(--darker-bg);
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 2px solid var(--neon-blue);
+            box-shadow: 0 -5px 20px rgba(15, 240, 252, 0.3);
+            z-index: 10;
+            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        .result-container.visible {
+            bottom: 0;
+        }
+
+        .result-link {
+            font-size: 2rem;
+            font-family: monospace;
+            color: var(--neon-blue);
+            text-shadow: var(--glow);
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .floating-number {
+            position: absolute;
+            font-size: 1.8rem;
+            color: var(--neon-blue);
+            text-shadow: var(--glow);
+            font-weight: bold;
+            animation: floatToBottom 1.5s forwards;
+            z-index: 100;
+        }
+
+        @keyframes floatToBottom {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .cyber-glitch {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                0deg,
+                transparent 45%,
+                rgba(150, 0, 255, 0.2) 50%,
+                transparent 55%
+            );
+            background-size: 100% 10px;
+            animation: glitch 2s infinite linear;
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        @keyframes glitch {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 0 100px;
+            }
+        }
+
+        .blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(8px);
+            z-index: 99;
+            transition: backdrop-filter 0.5s ease-in-out;
+        }
+
+        .blur-overlay.unlocked {
+            backdrop-filter: blur(0);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- BLUR OVERLAY (DISABLES CONTENT UNTIL UNLOCKED) -->
+    <div class="blur-overlay" id="blurOverlay"></div>
+
+    <!-- ACCESS LAYER (PASSCODE ENTRY) -->
+    <div class="access-panel" id="accessPanel">
+        <h1>THE BLACK BOOK™</h1>
+        <p>ENTER PASSCODE TO UNLOCK</p>
+        <input type="password" class="access-input" id="accessInput" maxlength="4" placeholder="****" autofocus>
+        <div class="error-message" id="errorMessage"></div>
+    </div>
+
+    <!-- MAIN CONTENT (HIDDEN UNTIL UNLOCKED) -->
+    <div class="container" id="mainContainer">
+        <h1 class="title">THE BLACK BOOK™</h1>
+        
+        <div class="shape-row">
+            <div class="shape-card">
+                <div class="shape-label">SQUARE</div>
+                <div class="shape square"></div>
+                <input type="text" class="code-input" id="square-code" maxlength="4" placeholder="____" inputmode="numeric">
+            </div>
+            
+            <div class="shape-card">
+                <div class="shape-label">CIRCLE</div>
+                <div class="shape circle"></div>
+                <input type="text" class="code-input" id="circle-code" maxlength="4" placeholder="____" inputmode="numeric">
+            </div>
+            
+            <div class="shape-card">
+                <div class="shape-label">TRIANGLE</div>
+                <div class="shape triangle"></div>
+                <input type="text" class="code-input" id="triangle-code" maxlength="4" placeholder="____" inputmode="numeric">
+            </div>
+            
+            <div class="shape-card">
+                <div class="shape-label">PARALLELOGRAM</div>
+                <div class="shape parallelogram"></div>
+                <input type="text" class="code-input" id="parallelogram-code" maxlength="4" placeholder="____" inputmode="numeric">
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULT CONTAINER (HIDDEN AT BOTTOM) -->
+    <div class="result-container" id="resultContainer">
+        <a href="#" class="result-link" id="resultLink" target="_blank"></a>
+    </div>
+
+    <!-- CYBER GLITCH EFFECT -->
+    <div class="cyber-glitch"></div>
+
+    <script>
+        // ACCESS CONTROL (PASSCODE: 1947)
+        const accessPanel = document.getElementById('accessPanel');
+        const accessInput = document.getElementById('accessInput');
+        const errorMessage = document.getElementById('errorMessage');
+        const mainContainer = document.getElementById('mainContainer');
+        const blurOverlay = document.getElementById('blurOverlay');
+
+        accessInput.addEventListener('input', (e) => {
+            if (e.target.value.length === 4) {
+                if (e.target.value === '1947') {
+                    // CORRECT PASSCODE
+                    blurOverlay.classList.add('unlocked');
+                    accessPanel.classList.add('unlocked');
+                    setTimeout(() => {
+                        mainContainer.classList.add('visible');
+                    }, 500);
+                } else {
+                    // WRONG PASSCODE
+                    errorMessage.textContent = "ACCESS DENIED. TRY AGAIN.";
+                    accessInput.value = '';
+                    accessInput.focus();
+                }
+            }
+        });
+
+        // AUTO-SUBMIT & ANIMATION LOGIC
+        const inputs = document.querySelectorAll('.code-input');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultLink = document.getElementById('resultLink');
+
+        // Correct codes (for demo)
+        const correctCodes = {
+            square: '1111',
+            circle: '2222',
+            triangle: '3333',
+            parallelogram: '5555'
+        };
+
+        // Auto-focus next input after 4 digits
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 4) {
+                    if (index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    } else {
+                        // All fields filled → validate
+                        validateCodes();
+                    }
+                }
+            });
+        });
+
+        // Validate codes & animate if correct
+        function validateCodes() {
+            let allCorrect = true;
+            const enteredCodes = {};
+
+            inputs.forEach(input => {
+                const shape = input.id.split('-')[0];
+                enteredCodes[shape] = input.value;
+                if (input.value !== correctCodes[shape]) {
+                    allCorrect = false;
+                    input.style.borderColor = 'var(--error-red)';
+                    input.style.boxShadow = '0 0 10px var(--error-red)';
+                } else {
+                    input.style.borderColor = 'var(--neon-blue)';
+                    input.style.boxShadow = 'var(--glow)';
+                }
+            });
+
+            if (allCorrect) {
+                // Animate numbers flying to bottom
+                animateNumberMerge(enteredCodes);
+            }
+        }
+
+        // Animate numbers merging into final URL
+        function animateNumberMerge(enteredCodes) {
+            const finalCode = Object.values(enteredCodes).join('');
+            const finalUrl = `https://${finalCode}.carrd.co`;
+            const shapes = ['square', 'circle', 'triangle', 'parallelogram'];
+            
+            shapes.forEach((shape, index) => {
+                const input = document.getElementById(`${shape}-code`);
+                const value = input.value;
+                const inputRect = input.getBoundingClientRect();
+                const resultRect = resultLink.getBoundingClientRect();
+                
+                // Calculate position to fly
+                const tx = resultRect.left + resultRect.width / 2 - inputRect.left - (index * 60);
+                const ty = resultRect.top - inputRect.top + 20;
+                
+                // Create floating number element
+                const floatingNum = document.createElement('div');
+                floatingNum.className = 'floating-number';
+                floatingNum.textContent = value;
+                floatingNum.style.left = `${inputRect.left}px`;
+                floatingNum.style.top = `${inputRect.top}px`;
+                floatingNum.style.setProperty('--tx', `${tx}px`);
+                floatingNum.style.setProperty('--ty', `${ty}px`);
+                document.body.appendChild(floatingNum);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    floatingNum.remove();
+                }, 1500);
+            });
+            
+            // Show final merged URL
+            setTimeout(() => {
+                resultLink.textContent = finalUrl;
+                resultLink.href = finalUrl;
+                resultContainer.classList.add('visible');
+            }, 1600);
+        }
+    </script>
+</body>
+</html>
