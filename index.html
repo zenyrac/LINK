@@ -3,34 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE BLACK BOOK™</title>
+    <title>THE TOME OF THE FORGOTTEN ORACLE</title>
     <style>
         :root {
-            --neon-blue: #0ff0fc;
-            --neon-purple: #9600ff;
-            --dark-bg: #0a0a12;
-            --darker-bg: #050508;
-            --panel-bg: rgba(10, 10, 20, 0.8);
-            --error-red: #ff3860;
-            --glow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            --ancient-gold: #d4af37;
+            --ancient-rune: #8b5a2b;
+            --dark-bg: #0a0806;
+            --darker-bg: #050300;
+            --panel-bg: rgba(20, 15, 10, 0.8);
+            --error-red: #9a2b2b;
+            --glow: 0 0 10px var(--ancient-gold), 0 0 20px rgba(212, 175, 55, 0.5);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', monospace;
+            font-family: 'Times New Roman', serif;
         }
 
         body {
             background: var(--dark-bg);
-            color: white;
+            color: #e0d0b0;
             height: 100vh;
             overflow: hidden;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><path d="M0 0 L100 100 M100 0 L0 100" stroke="%23d4af37" stroke-width="1"/></svg>');
         }
 
         .access-panel {
@@ -41,7 +42,7 @@
             background: var(--panel-bg);
             padding: 2rem;
             border-radius: 8px;
-            border: 1px solid var(--neon-blue);
+            border: 1px solid var(--ancient-gold);
             box-shadow: var(--glow);
             z-index: 100;
             text-align: center;
@@ -56,15 +57,17 @@
 
         .access-panel h1 {
             margin-bottom: 1.5rem;
-            color: var(--neon-blue);
+            color: var(--ancient-gold);
             text-shadow: var(--glow);
             font-size: 1.8rem;
+            letter-spacing: 3px;
+            font-variant: small-caps;
         }
 
         .access-input {
             background: transparent;
-            border: 2px solid var(--neon-blue);
-            color: white;
+            border: 2px solid var(--ancient-gold);
+            color: #e0d0b0;
             padding: 0.8rem;
             font-size: 1.2rem;
             text-align: center;
@@ -82,6 +85,7 @@
             color: var(--error-red);
             margin-bottom: 1rem;
             height: 20px;
+            font-style: italic;
         }
 
         .container {
@@ -101,10 +105,13 @@
         h1.title {
             text-align: center;
             margin-bottom: 2rem;
-            color: var(--neon-blue);
+            color: var(--ancient-gold);
             text-shadow: var(--glow);
             font-size: 2.5rem;
-            letter-spacing: 2px;
+            letter-spacing: 5px;
+            font-variant: small-caps;
+            border-bottom: 2px solid var(--ancient-rune);
+            padding-bottom: 0.5rem;
         }
 
         .shape-row {
@@ -119,8 +126,8 @@
             background: var(--panel-bg);
             border-radius: 8px;
             padding: 1.5rem;
-            border: 1px solid var(--neon-purple);
-            box-shadow: 0 0 10px var(--neon-purple);
+            border: 1px solid var(--ancient-rune);
+            box-shadow: 0 0 10px rgba(139, 90, 43, 0.5);
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
             overflow: hidden;
@@ -134,23 +141,24 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            background: linear-gradient(45deg, var(--ancient-gold), var(--ancient-rune));
             z-index: -1;
             border-radius: 10px;
-            opacity: 0.7;
+            opacity: 0.3;
         }
 
         .shape-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 0 20px var(--neon-purple);
+            box-shadow: 0 0 20px rgba(139, 90, 43, 0.7);
         }
 
         .shape-label {
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: var(--neon-blue);
+            color: var(--ancient-gold);
             text-align: center;
             font-weight: bold;
+            font-variant: small-caps;
         }
 
         .shape {
@@ -160,8 +168,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(15, 240, 252, 0.1);
-            border: 2px solid var(--neon-blue);
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--ancient-gold);
             position: relative;
         }
 
@@ -178,7 +186,7 @@
             height: 0;
             border-left: 50px solid transparent;
             border-right: 50px solid transparent;
-            border-bottom: 100px solid var(--neon-blue);
+            border-bottom: 100px solid var(--ancient-gold);
             background: transparent !important;
             border-top: none;
         }
@@ -191,9 +199,9 @@
             width: 100%;
             padding: 0.8rem;
             background: transparent;
-            border: 2px solid var(--neon-blue);
+            border: 2px solid var(--ancient-gold);
             border-radius: 5px;
-            color: white;
+            color: #e0d0b0;
             font-size: 1.5rem;
             text-align: center;
             letter-spacing: 5px;
@@ -202,7 +210,7 @@
 
         .code-input:focus {
             outline: none;
-            box-shadow: 0 0 15px var(--neon-blue);
+            box-shadow: 0 0 15px var(--ancient-gold);
         }
 
         .result-container {
@@ -213,8 +221,8 @@
             background: var(--darker-bg);
             padding: 1.5rem;
             text-align: center;
-            border-top: 2px solid var(--neon-blue);
-            box-shadow: 0 -5px 20px rgba(15, 240, 252, 0.3);
+            border-top: 2px solid var(--ancient-gold);
+            box-shadow: 0 -5px 20px rgba(212, 175, 55, 0.3);
             z-index: 10;
             transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
         }
@@ -225,17 +233,18 @@
 
         .result-link {
             font-size: 2rem;
-            font-family: monospace;
-            color: var(--neon-blue);
+            font-family: 'Times New Roman', serif;
+            color: var(--ancient-gold);
             text-shadow: var(--glow);
             letter-spacing: 2px;
             text-decoration: none;
+            font-variant: small-caps;
         }
 
         .floating-number {
             position: absolute;
             font-size: 1.8rem;
-            color: var(--neon-blue);
+            color: var(--ancient-gold);
             text-shadow: var(--glow);
             font-weight: bold;
             animation: floatToBottom 1.5s forwards;
@@ -253,7 +262,7 @@
             }
         }
 
-        .cyber-glitch {
+        .ancient-glitch {
             position: fixed;
             top: 0;
             left: 0;
@@ -262,7 +271,7 @@
             background: linear-gradient(
                 0deg,
                 transparent 45%,
-                rgba(150, 0, 255, 0.2) 50%,
+                rgba(139, 90, 43, 0.2) 50%,
                 transparent 55%
             );
             background-size: 100% 10px;
@@ -304,39 +313,39 @@
 
     <!-- ACCESS LAYER (PASSCODE ENTRY) -->
     <div class="access-panel" id="accessPanel">
-        <h1>THE BLACK BOOK™</h1>
-        <p>ENTER PASSCODE TO UNLOCK</p>
-        <input type="password" class="access-input" id="accessInput" maxlength="4" placeholder="****" autofocus>
+        <h1>THE TOME OF THE FORGOTTEN ORACLE</h1>
+        <p>SPEAK THE SACRED NUMBERS TO UNSEAL</p>
+        <input type="password" class="access-input" id="accessInput" maxlength="4" placeholder="⚷⚷⚷⚷" autofocus>
         <div class="error-message" id="errorMessage"></div>
     </div>
 
     <!-- MAIN CONTENT (HIDDEN UNTIL UNLOCKED) -->
     <div class="container" id="mainContainer">
-        <h1 class="title">THE BLACK BOOK™</h1>
+        <h1 class="title">THE TOME OF THE FORGOTTEN ORACLE</h1>
         
         <div class="shape-row">
             <div class="shape-card">
-                <div class="shape-label">SQUARE</div>
+                <div class="shape-label">SIGIL OF EARTH</div>
                 <div class="shape square"></div>
-                <input type="text" class="code-input" id="square-code" maxlength="4" placeholder="____" inputmode="numeric">
+                <input type="text" class="code-input" id="square-code" maxlength="4" placeholder="⚷⚷⚷⚷" inputmode="numeric">
             </div>
             
             <div class="shape-card">
-                <div class="shape-label">CIRCLE</div>
+                <div class="shape-label">SIGIL OF SKY</div>
                 <div class="shape circle"></div>
-                <input type="text" class="code-input" id="circle-code" maxlength="4" placeholder="____" inputmode="numeric">
+                <input type="text" class="code-input" id="circle-code" maxlength="4" placeholder="⚷⚷⚷⚷" inputmode="numeric">
             </div>
             
             <div class="shape-card">
-                <div class="shape-label">TRIANGLE</div>
+                <div class="shape-label">SIGIL OF FLAME</div>
                 <div class="shape triangle"></div>
-                <input type="text" class="code-input" id="triangle-code" maxlength="4" placeholder="____" inputmode="numeric">
+                <input type="text" class="code-input" id="triangle-code" maxlength="4" placeholder="⚷⚷⚷⚷" inputmode="numeric">
             </div>
             
             <div class="shape-card">
-                <div class="shape-label">PARALLELOGRAM</div>
+                <div class="shape-label">SIGIL OF VOID</div>
                 <div class="shape parallelogram"></div>
-                <input type="text" class="code-input" id="parallelogram-code" maxlength="4" placeholder="____" inputmode="numeric">
+                <input type="text" class="code-input" id="parallelogram-code" maxlength="4" placeholder="⚷⚷⚷⚷" inputmode="numeric">
             </div>
         </div>
     </div>
@@ -346,8 +355,8 @@
         <a href="#" class="result-link" id="resultLink" target="_blank"></a>
     </div>
 
-    <!-- CYBER GLITCH EFFECT -->
-    <div class="cyber-glitch"></div>
+    <!-- ANCIENT GLITCH EFFECT -->
+    <div class="ancient-glitch"></div>
 
     <script>
         // ACCESS CONTROL (PASSCODE: 1947)
@@ -368,7 +377,7 @@
                     }, 500);
                 } else {
                     // WRONG PASSCODE
-                    errorMessage.textContent = "ACCESS DENIED. TRY AGAIN.";
+                    errorMessage.textContent = "THE TOME REJECTS YOUR TOUCH. TRY AGAIN.";
                     accessInput.value = '';
                     accessInput.focus();
                 }
@@ -415,7 +424,7 @@
                     input.style.borderColor = 'var(--error-red)';
                     input.style.boxShadow = '0 0 10px var(--error-red)';
                 } else {
-                    input.style.borderColor = 'var(--neon-blue)';
+                    input.style.borderColor = 'var(--ancient-gold)';
                     input.style.boxShadow = 'var(--glow)';
                 }
             });
